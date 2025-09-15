@@ -12,7 +12,8 @@
 
 1. Registrar un compte gratuït a ONLYOFFICE Personal
 
-2. Crear un espai de treball i:![alt text](image.png)
+
+2. Crear un espai de treball i:
 
    1. Crear un document de text, escriure almenys 3 paràgrafs i inserir comentaris propis.
 
