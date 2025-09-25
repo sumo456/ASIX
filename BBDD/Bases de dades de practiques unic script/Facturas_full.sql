@@ -6,7 +6,7 @@ constraint cp_provincias primary key (codpro)
 
 create table  pueblos
 ( codpue    numeric(5)  not null,
-  nombre    varchar(40) not null,
+  nombre    varchar(45) not null,
   codpro    numeric(2),
 constraint cp_pueblos primary key (codpue),
 constraint ca_pue_pro foreign key (codpro) references provincias
