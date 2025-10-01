@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <agenda>
 	<contacto>
-		<nombre></nombre>
-		<primer_apellido> </primer_apellido>
-		<segundo_apellido> </segundo_apellido>
-		<edad> </edad>
-		<hobbie> </hobbie>
-		<telefono> </telefono>
-		<correo> </correo>
-		<direccion> </direccion>
-
+		<nombre>Joan</nombre>
+		<primer_apellido>Garcia</primer_apellido>
+		<segundo_apellido>Perez</segundo_apellido>
+		<edad>25</edad>
+		<hobbie>Alpinismo</hobbie>
+		<telefono>159753456</telefono>
+		<correo>jhondoe@gmail.com</correo>
+		<adreca>
+			<direccion>C/balmes 24</direccion>
+			<ciudad>Barcelona</ciudad>
+			<codi_postal>08001</codi_postal>
+		</adreca>
+	</contacto>
+	<contacto>
+		<nombre>Maria</nombre>
+		<primer_apellido>López</primer_apellido>
+		<segundo_apellido>Fernández</segundo_apellido>
+		<edad>27</edad>
+		<hobbie>Atletismo</hobbie>
+		<telefono>623456789</telefono>
+		<correo>jhondoe1@gmail.com</correo>
+		<adreca>
+			<direccion>C/diputacion 24</direccion>
+			<ciudad>Barcelona</ciudad>
+			<codi_postal>08001</codi_postal>
+		</adreca>
+	</contacto>
+	<contacto>
+		<nombre>Arnau</nombre>
+		<primer_apellido>Almirante</primer_apellido>
+		<segundo_apellido>Diaz</segundo_apellido>
+		<edad>22</edad>
+		<hobbie>Motociclismo</hobbie>
+		<telefono>456789123</telefono>
+		<correo>jhondoe2@gmail.com</correo>
+		<adreca>
+			<direccion>C/catalunya 24</direccion>
+			<ciudad>Barcelona</ciudad>
+			<codi_postal>08001</codi_postal>
+		</adreca>
+	</contacto>
+	<contacto>
+		<nombre>Laia</nombre>
+		<primer_apellido>Ferrer</primer_apellido>
+		<segundo_apellido>Perez</segundo_apellido>
+		<edad>29</edad>
+		<hobbie>Montar a caballo</hobbie>
+		<telefono>789456123</telefono>
+		<correo>jhondoe3@gmail.com</correo>
+		<adreca>
+			<direccion>C/españa 24</direccion>
+			<ciudad>Barcelona</ciudad>
+			<codi_postal>08001</codi_postal>
+		</adreca>
+	</contacto>
+	<contacto>
+		<nombre>Marta</nombre>
+		<primer_apellido>Salvador</primer_apellido>
+		<segundo_apellido>Tarraga</segundo_apellido>
+		<edad>32</edad>
+		<hobbie>Jugar a videojuegos</hobbie>
+		<telefono>951753486</telefono>
+		<correo>jhondoe4@gmail.com</correo>
+		<adreca>
+			<direccion>C/universidad 24</direccion>
+			<ciudad>Barcelona</ciudad>
+			<codi_postal>08001</codi_postal>
+		</adreca>
 	</contacto>
 </agenda>
