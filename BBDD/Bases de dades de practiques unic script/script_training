@@ -1,0 +1,22 @@
+\c template1
+drop database training;
+create database training /*WITH ENCODING 'UTF8'
+   LC_COLLATE = 'es_ES.UTF-8'
+   LC_CTYPE = 'es_ES.UTF-8'
+   TEMPLATE = template1
+   CONNECTION LIMIT = -1*/;
+
+\c training
+
+\i CLIENTES.SQL 
+\i PEDIDOS.SQL 
+\i PRODUCTO.SQL 
+\i REPVENTA.SQL 
+\i OFICINAS.SQL 
+\i OFICINAS.DAT 
+\i REPVENTA.DAT 
+\i PEDIDOS.DAT 
+\i PRODUCTO.DAT 
+\i CLIENTES.DAT 
+
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<agenda>
+	<contacto>
+		<nombre></nombre>
+		<primer_apellido> </primer_apellido>
+		<segundo_apellido> </segundo_apellido>
+		<edad> </edad>
+		<hobbie> </hobbie>
+		<telefono> </telefono>
+		<correo> </correo>
+		<direccion> </direccion>
+
+	</contacto>
+</agenda>

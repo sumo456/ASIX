@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- declaració de versió de xml s'inicia amb <? i acaba amb ?> la versió es la 1.0 -->
+<!-- Comentaris, xml no permet el doble guio dins del comentari -->
+<!--
+cinc simbols especials
+        &amp;   =   &
+        &lt;    =   <
+        &gt;    =   >
+        &quot;  =   "
+        &apos;  =   '
+-->
+<order><!-- arrel o raiz, tot document ha de tenir una arrel, element que engloba tot el xml  tota etiqueta de XML
+a de ser tancada per un altra etiqueta anomenada igual pero precedida amb / o
+amb el tancamament simplificat si no conte res, té que estar correctament anidat -->
+
+    <shirts><!-- fill de order -->
+        <shirt quantity="4"><!-- fill de shirts, conte un atribut anomenat quantity amb valor 4, senmpre entre "" es valid iniciar amb comilles simple i dintre tenir comilles dobles ' " " '-->
+            <size>XXL</size><!-- fill de shirt conte un node especial anomenat node de text amb valor XXL  -->
+            <color>purple</color><!-- germa de size i fill de shirt conte un node especial anomenat node de text amb valor purple  -->
+        </shirt><!-- tancament de shirt -->
+        <shirt quantity="1"> <!-- No es el mateix shirt que Shirt o sHiRt compte amb les majuscoles i minuscoles -->
+            <size>M</size>
+            <color>red</color>
+        </shirt>
+    </shirts>
+
+    <sweatshirts><!-- germa de shirts al estar a la mateixa altura en l'arbre de nodes-->
+        <sweatshirt quantity="1">
+            <size>XL</size>
+            <color>blue</color>
+        </sweatshirt>
+        <sweatshirt quantity="2">
+            <size>XL</size>
+            <color>red</color>
+        </sweatshirt>
+    </sweatshirts>
+
+    <hats><!-- germa de shirts i sweatshirts al estar a la mateixa altura en l'arbre de nodes-->
+        <hat color="gray" quantity="1"/> <!-- tancament simplificat, conte atributs amb valor -->
+        <hat color="bronze" quantity="342"/>
+    </hats>
+
+    <mug quantity="1"/>
+    <martiniGlasses quantity="0"/>
+</order>
