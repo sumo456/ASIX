@@ -9,6 +9,7 @@ A continuación, se presentan las consultas SQL para resolver los ejercicios pro
 SELECT ciudad, objetivo, ventas
 FROM oficinas;
 ```
+![alt text](image.png)
 
 2. **Lista de las oficinas de ventas de la región Este con sus objetivos y ventas**  
 ```sql
