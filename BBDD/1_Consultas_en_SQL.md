@@ -1,106 +1,169 @@
-# Consultes en SQL: SELECT, FROM i WHERE
+# Operadores y Funciones en SQL
 
-## Objectius
+Este documento presenta una descripción detallada de los operadores y funciones disponibles en SQL, con un enfoque en PostgreSQL. Se incluyen los tipos de datos más comunes, operadores lógicos, de comparación, matemáticos, funciones para cadenas de caracteres, fechas y estructuras condicionales. Aunque muchos son estándar, cada SGBD puede ofrecer funcionalidades adicionales, por lo que es recomendable consultar el manual oficial de PostgreSQL para obtener información específica.
 
-En aquesta pràctica aprendràs a:
+## 1. Tipos de Datos
 
-* Formular consultes simples en SQL amb la sentència **SELECT** (sobre una sola taula), fent ús de les clàusules **FROM**, **WHERE** i **ORDER BY**.
-* Determinar quan és necessari utilitzar el modificador **DISTINCT**.
-* Gestionar valors nuls amb l’operador **IS NULL** i la funció **COALESCE**.
+Los tipos de datos más relevantes utilizados en la base de datos de prácticas son los siguientes (todos cumplen con el estándar SQL):
 
----
+- **VARCHAR(n)**: Cadena de caracteres de longitud máxima *n*.
+- **NUMERIC(n,m)**: Número con *n* dígitos totales, de los cuales *m* son decimales.
+- **DATE**: Almacena fechas. Para incluir hora, se usa **TIMESTAMP**.
+- **BOOLEAN**: Representa valores lógicos **TRUE** (verdadero, se muestra como 't') o **FALSE** (falso, se muestra como 'f'). Aunque no se usa en la base de datos de prácticas, es un tipo relevante.
 
-## Recordatori de la sessió anterior
+**Nota**: El valor **NULL** indica ausencia de valor y no se visualiza al imprimirse. La función **COALESCE** permite reemplazar valores nulos por un valor específico.
 
-La sentència **SELECT** està formada per diferents clàusules. L’estructura bàsica és:
+## 2. Operadores Lógicos
 
+Los operadores lógicos en PostgreSQL (**AND**, **OR**, **NOT**) siguen una lógica booleana de tres valores, considerando **TRUE**, **FALSE** y **NULL**. A continuación, se muestra la tabla de verdad:
+
+| a       | b       | a AND b | a OR b | NOT b  |
+|---------|---------|---------|--------|--------|
+| True    | True    | True    | True   | False  |
+| True    | False   | False   | True   | True   |
+| True    | Null    | Null    | True   | Null   |
+| False   | False   | False   | False  | True   |
+| False   | Null    | False   | Null   | Null   |
+| Null    | Null    | Null    | Null   | Null   |
+
+## 3. Operadores de Comparación
+
+Los operadores de comparación permiten evaluar condiciones en las cláusulas **SELECT** y **WHERE**:
+
+- **<**: Menor que.
+- **>**: Mayor que.
+- **<=**: Menor o igual que.
+- **>=**: Mayor o igual que.
+- **=**: Igual que.
+- **!=**: Distinto de.
+- **BETWEEN x AND y**: Equivale a `>= x AND <= y`.
+- **NOT BETWEEN x AND y**: Equivale a `< x OR > y`.
+- **IS NULL**: Devuelve **TRUE** si el valor es nulo.
+- **IS NOT NULL**: Devuelve **TRUE** si el valor no es nulo.
+- **IN (v1, v2, ...)**: Equivale a `= v1 OR = v2 OR ...`.
+
+## 4. Operadores Matemáticos
+
+Los operadores matemáticos permiten realizar cálculos numéricos:
+
+- **+**: Suma.
+- **-**: Resta.
+- *** : Multiplicación.
+- **/**: División (trunca el resultado en divisiones entre enteros).
+- **%**: Resto de la división entera.
+- **^**: Potencia (ejemplo: `3^2 = 9`).
+- **|/**: Raíz cuadrada (ejemplo: `|/25 = 5`).
+- **||/**: Raíz cúbica (ejemplo: `||/27 = 3`).
+- **!**: Factorial (ejemplo: `5! = 120`).
+- **!!**: Factorial como operador prefijo (ejemplo: `!!5 = 120`).
+- **@**: Valor absoluto.
+
+**Nota**: No se incluyen operadores para datos binarios.
+
+## 5. Funciones Matemáticas
+
+Algunas funciones matemáticas comunes en PostgreSQL son:
+
+- **ABS(x)**: Valor absoluto de *x*.
+- **SIGN(x)**: Signo de *x* (-1, 0, o 1).
+- **MOD(x, y)**: Resto de la división de *x* entre *y*.
+- **SQRT(x)**: Raíz cuadrada de *x*.
+- **CBRT(x)**: Raíz cúbica de *x*.
+- **CEIL(x)**: Entero más cercano por encima de *x*.
+- **FLOOR(x)**: Entero más cercano por debajo de *x*.
+- **ROUND(x)**: Redondea *x* al entero más cercano.
+- **ROUND(x, n)**: Redondea *x* a *n* dígitos decimales (si *n* es positivo) o al múltiplo de `10^n` más cercano (si *n* es negativo).
+- **TRUNC(x)**: Trunca *x* al entero.
+- **TRUNC(x, n)**: Trunca *x* a *n* dígitos decimales (si *n* es positivo) o al múltiplo de `10^n` más cercano por debajo (si *n* es negativo).
+
+PostgreSQL también ofrece funciones para logaritmos, trigonometría y conversiones entre grados y radianes.
+
+## 6. Operadores y Funciones de Cadenas de Caracteres
+
+Las cadenas de caracteres en SQL se delimitan con comillas simples ('cadena'). Las principales operaciones son:
+
+- **||**: Concatena dos cadenas.
+- **LIKE expr**: Devuelve **TRUE** si la cadena coincide con el patrón *expr*. Comodines: `_` (un carácter), `%` (cero o más caracteres).
+- **LENGTH(cadena)**: Devuelve el número de caracteres.
+- **CHAR_LENGTH(cadena)**: Equivalente a **LENGTH** (estándar SQL).
+- **POSITION(subcadena IN cadena)**: Posición inicial de *subcadena* en *cadena*.
+- **SUBSTR(cadena, n [, long])**: Extrae la subcadena desde la posición *n* con longitud máxima *long* (si no se especifica, hasta el final).
+- **SUBSTRING(cadena FROM n [FOR long])**: Equivalente a **SUBSTR** (estándar SQL).
+- **LOWER(cadena)**: Convierte la cadena a minúsculas.
+- **UPPER(cadena)**: Convierte la cadena a mayúsculas.
+- **BTRIM(cadena)**: Elimina espacios al inicio y final.
+- **LTRIM(cadena)**: Elimina espacios al inicio.
+- **RTRIM(cadena)**: Elimina espacios al final.
+- **BTRIM(cadena, lista)**: Elimina caracteres de *lista* al inicio y final.
+- **LTRIM(cadena, lista)**: Elimina caracteres de *lista* al inicio.
+- **RTRIM(cadena, lista)**: Elimina caracteres de *lista* al final.
+- **TRIM([BOTH | LEADING | TRAILING] lista FROM cadena)**: Estándar SQL para **BTRIM**, **LTRIM** o **RTRIM**.
+- **CHR(n)**: Devuelve el carácter correspondiente al código ASCII *n*.
+- **INITCAP(cadena)**: Convierte la primera letra de cada palabra a mayúscula.
+- **LPAD(cadena, n [, c])**: Rellena la cadena por la izquierda con el carácter *c* (o espacios) hasta alcanzar longitud *n*. Trunca si excede *n*.
+- **RPAD(cadena, n [, c])**: Similar a **LPAD**, pero rellena por la derecha.
+
+**Ejemplo**:
 ```sql
-SELECT [DISTINCT] { * | columna [, columna] }
-FROM taula
-[WHERE condició_de_busqueda]
-[ORDER BY columna [ASC|DESC] [, columna [ASC|DESC]]];
+SELECT BTRIM('--++-+Hola+-cara-+cola++--+-', '+-');
+SELECT TRIM(BOTH '+-' FROM '--++-+Hola+-cara-+cola++--+-');
 ```
 
-**Ordre d’execució:**
+## 7. Operadores y Funciones de Fecha
 
-1. **FROM**: especifica la taula sobre la qual es farà la consulta.
-2. **WHERE**: defineix les condicions que han de complir les files a mostrar (predicats booleans amb AND/OR).
-3. **SELECT**: selecciona les columnes del resultat. Amb `*` es mostren totes les columnes.
-4. **DISTINCT**: elimina les files repetides del resultat.
-
----
-
-## En aquesta sessió
-
-Practicarem la sentència **SELECT** aplicant-la a la base de dades de pràctiques.
-És important conèixer bé la seva estructura i tenir a mà el document que la descriu.
-
----
-
-## Clàusula ORDER BY
-
-La clàusula **ORDER BY** és sempre l’última de la sentència. Serveix per **ordenar** el resultat segons una o diverses columnes, en ordre ascendent (`ASC`) o descendent (`DESC`).
-
-**Exemple:**
-
+Para configurar el formato de fecha en PostgreSQL al estilo europeo (día/mes/año con separador '/'):
 ```sql
-SELECT *
-FROM clientes
-ORDER BY codpue DESC, codcli;
+SET DATESTYLE TO EUROPEAN, SQL;
 ```
 
-Aquest exemple mostra tots els clients ordenats primer pel codi de poble (descendent) i després pel número de client.
+Funciones de conversión entre tipos:
+- **TO_CHAR(dato, formato)**: Convierte *dato* a cadena según *formato*.
+- **TO_DATE(dato, formato)**: Convierte una cadena a fecha según *formato*.
+- **TO_NUMBER(dato, formato)**: Convierte una cadena a número según *formato*.
 
----
+**Patrones de formato**:
+- **Fecha/hora**: `HH` (hora 1-12), `HH24` (hora 0-23), `MI` (minutos), `SS` (segundos), `YYYY` (año), `MONTH` (nombre del mes), `DD` (día del mes), etc.
+- **Numéricos**: `9` (dígito), `S` (signo), `.` (punto decimal), `,` (separador de miles).
 
-## Expressions en SELECT i WHERE
-
-A les clàusules **SELECT** i **WHERE** es poden utilitzar expressions formades per columnes i constants.
-Les expressions poden ser **renombrades** amb `AS`.
-
-També és possible ordenar pel número de posició de la columna a **SELECT**.
-
-**Exemple:**
-
+**Ejemplo**:
 ```sql
-SELECT precio, ROUND(precio * 0.8, 2) AS rebajado
-FROM articulos
-ORDER BY 2;
+SELECT TO_CHAR(CURRENT_TIMESTAMP, 'HH12 horas MI m. SS seg.');
+SELECT TO_NUMBER('-12,454.8', 'S999,999.9');
 ```
 
----
+Funciones comunes:
+- **CURRENT_DATE**: Devuelve la fecha actual (tipo **DATE**).
+- **CURRENT_TIME**: Devuelve la hora actual (tipo **TIME**).
+- **CURRENT_TIMESTAMP**: Devuelve fecha y hora actuales (tipo **TIMESTAMP**).
+- **EXTRACT(campo FROM dato)**: Extrae una parte de una fecha/hora (ejemplo: `day`, `month`, `year`, `hour`).
+  - Ejemplo: `SELECT EXTRACT(week FROM TO_DATE('7/11/2005', 'dd/mm/yyyy'));`
+- Sumar/restar días: Usa `+` o `-` (ejemplo: `CURRENT_DATE + 7`).
 
-## Tractament de valors nuls
+## 8. Función CASE
 
-Un **nul** significa absència de valor, no és el mateix que un zero.
-Per comprovar-los:
+La función **CASE** permite lógica condicional en consultas SQL, similar a sentencias condicionales en lenguajes procedurales.
 
-* `IS NULL` → comprova si un valor és nul.
-* `IS NOT NULL` → comprova si no és nul.
-
-Amb la funció **COALESCE(columna, valor_si_nul)** podem substituir els nuls per un valor concret.
-
-**Exemple:**
-
+**Ejemplo**:
 ```sql
-SELECT codcli, nombre, COALESCE(codpostal, 0) AS postal, codpostal AS postal_null
-FROM clientes
-WHERE codcli < 150
-  AND (codpostal = 0 OR codpostal IS NULL);
+SELECT codart, precio,
+       CASE WHEN stock > 500 THEN precio * 0.8
+            WHEN stock BETWEEN 200 AND 500 THEN precio * 0.9
+            ELSE precio
+       END AS precio_con_descuento
+FROM articulos;
 ```
 
-Aquesta condició es pot simplificar amb:
+Este ejemplo aplica descuentos según el stock: 20% si es mayor a 500, 10% si está entre 200 y 500, o sin descuento en otros casos.
 
+## 9. Funciones COALESCE y NULLIF
+
+- **COALESCE(valor [, ...])**: Devuelve el primer valor no nulo de la lista.
+- **NULLIF(valor1, valor2)**: Devuelve **NULL** si *valor1* y *valor2* son iguales; de lo contrario, devuelve *valor1*.
+
+**Ejemplo**:
 ```sql
-COALESCE(limite_credito, 0) = 0
+SELECT COALESCE(stock, stock_min, -1) FROM articulos;
+SELECT NULLIF(stock, stock_min) FROM articulos;
 ```
 
----
-
-## Bones pràctiques a recordar
-
-* Tracta sempre amb cura els **nuls** quan facis servir aquestes columnes a les condicions (**WHERE**).
-* Decideix **a priori** si necessites el modificador **DISTINCT**.
-* Alguns SGBD implementen **DISTINCT** mitjançant algoritmes d’ordenació. Si el resultat ja s’ha d’ordenar, pot no ser necessari afegir un **ORDER BY** addicional.
-
-👉 Recomanació: ordena correctament les columnes a la clàusula **SELECT** per aprofitar millor el rendiment.
+Ambas funciones se convierten internamente en expresiones **CASE**.
