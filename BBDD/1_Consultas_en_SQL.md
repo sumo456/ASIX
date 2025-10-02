@@ -1,89 +1,79 @@
-	 	 	 	  
-**Consultes en SQL: SELECT, FROM y WHERE**
+# Consultas en SQL: SELECT, FROM y WHERE
 
-**Objectius**
+Este documento presenta una guía clara y estructurada sobre cómo formular consultas básicas en SQL utilizando la sentencia **SELECT**, con un enfoque en las cláusulas **FROM**, **WHERE** y **ORDER BY**, así como el manejo de valores nulos y el modificador **DISTINCT**. Está diseñado para facilitar la comprensión y práctica de consultas en una base de datos, específicamente en PostgreSQL.
 
-Els objectius a cobrir en aquesta pràctica son els següents:
+## Objetivos
 
-Ser capaç de formular consultes simples en SQL mitjançant la sentencia SELECT (sobre una sola taula), fent us de les clàusules FROM, WHERE y ORDER BY.
+- Formular consultas simples en SQL usando la sentencia **SELECT** sobre una sola tabla, empleando las cláusulas **FROM**, **WHERE** y **ORDER BY**.
+- Determinar cuándo es necesario usar el modificador **DISTINCT**.
+- Gestionar valores nulos con el operador **IS NULL** y la función **COALESCE**.
 
-Ser capaç de determinar quan es necessari el us del modificador DISTINCT.
+## Estructura de la Sentencia SELECT
 
-Ser capaç de manejar els nuls mitjançant el operador IS NULL i la funció COALESCE.
+La sentencia **SELECT** se compone de varias cláusulas que se procesan en el siguiente orden lógico:
 
-**En la sessió anterior . . .**
-
-Varem veure que la sentencia SELECT consta de varies clàusules, de las que ja coneguem algunes.
-
-SELECT \[DISTINCT\] { \* | columna \[, columna\]}
-
+```sql
+SELECT [DISTINCT] { * | columna [, columna] }
 FROM taula
+[WHERE condición_de_búsqueda]
+[ORDER BY columna [ASC|DESC] [, columna [ASC|DESC]];
+```
 
-\[WHERE condició\_de\_busqueda\]
+### Desglose de Cláusulas
+- **FROM**: Especifica la tabla sobre la que se realiza la consulta.
+- **WHERE**: Filtra las filas que cumplen una condición booleana, combinando comparaciones con operadores lógicos **AND** y **OR**.
+- **SELECT**: Define las columnas o expresiones a mostrar en el resultado. El asterisco (*) selecciona todas las columnas de la tabla.
+- **DISTINCT**: Elimina filas duplicadas del resultado. Esto es relevante cuando las columnas seleccionadas no incluyen la clave primaria (o parte de ella, si es compuesta).
+- **ORDER BY**: Ordena el resultado según una o más columnas, en orden ascendente (**ASC**) o descendente (**DESC**).
 
-\[ORDER BY columna \[ASC|DESC\] \[,columna \[ASC|DESC\] \];
-
-Les recordem en l’ordre en que es tenen en conter durant la execució:
-
-FROM : aquí se especifica la taula sobre la que es va a realitzar la consulta.
-
-WHERE : si sols es deu mostrar un subconjunt de las files de la taula, aquí se especifica la condició que deuen complir les files a mostrar; esta condició serà un predicat booleà amb comparacions unides per AND/OR.
-
-SELECT : aquí se especifiquen les columnes a mostrar en el resultat; per a mostrar totes les columnes se utilitza \*.
-
-DISTINCT : es un modificador que se utilitza darrere la clàusula SELECT para que no se mostren files repetides en el resultat (açò pot ocórrer sols quan en SELECT es prescindeix de la clau primària de la taula o de part de ella, si es composta).
-
-**En esta sessió . . .**
-
-Vas a practicar la sentencia SELECT per a consultar la base de dades de practiques, per el que deuries conèixer be la seva estructura i tenir en tot moment a ma el documento on se explica aquesta.
-
-**Clàusula ORDER BY**
-
-Esta clàusula, si se inclou, es sempre la ultima en la sentencia SELECT. S’utilitza per a ordenar el resultat de la consulta. La ordenació pot ser ascendent o descendent i pot basar-se en una sola columna o en varies.
-
-La sentencia del següent exemple mostra les dades de tots els clientes ordenats pel codic del poble (descendentment) i tots els d’un mateix poble apareixeran ordenats per el numero de client. No es necessari que executes l’exemple.
-
-SELECT \*
-
+**Ejemplo**:
+```sql
+SELECT *
 FROM clientes
-
 ORDER BY codpue DESC, codcli;
+```
+Este ejemplo muestra todos los datos de la tabla **clientes**, ordenados por **codpue** (descendente) y, dentro de cada pueblo, por **codcli** (ascendente).
 
-**Expressions en SELECT i WHERE**
+## Cláusula ORDER BY
 
-En las clàusules SELECT i WHERE, a més de columnes, també es poden incloure expressions que contingen columnes i constants. Les columnes i expressions especificades en la clàusula SELECT es poden renombrar al mostrar-les en el resultat mitjançant AS.
+- **Uso**: Ordena los resultados de la consulta según una o más columnas.
+- **Opciones**: **ASC** (ascendente, por defecto) o **DESC** (descendente).
+- **Múltiples columnas**: Las filas se ordenan primero por la primera columna mencionada, luego por la segunda, y así sucesivamente.
 
-Si el resultat d’una consulta es deu mostrar ordenat segons el valor de una expressió de la clàusula SELECT, esta expressió s’indica en la clàusula ORDER BY mitjançant el nombre d’orde que ocupa en la clàusula SELECT.
+## Expresiones en SELECT y WHERE
 
-SELECT precio, ROUND(precio \* 0.8, 2\) AS rebajado
+- Las cláusulas **SELECT** y **WHERE** pueden incluir expresiones con columnas, constantes y operadores.
+- En **SELECT**, las expresiones se pueden renombrar con el operador **AS** para mejorar la legibilidad del resultado.
+- En **ORDER BY**, una expresión de la cláusula **SELECT** se puede referenciar por su posición numérica en la lista de selección.
 
+**Ejemplo**:
+```sql
+SELECT precio, ROUND(precio * 0.8, 2) AS rebajado
 FROM articulos
-
 ORDER BY 2;
+```
+Este ejemplo muestra el precio original y un precio con un 20% de descuento (redondeado a 2 decimales), ordenado por el precio rebajado.
 
-**Nuls**
+## Manejo de Valores Nulos
 
-Quan no se ha insertat un valor en una columna d’una fila es diu que aquesta es nula. Un nul no es un valor: un nul implica absència de valor. Per a saber si una columna es nula deurem utilitzar el operador de comparació IS NULL i para saber si no es nula, utilitzarem l’operador IS NOT NULL.
+- Un valor **NULL** indica la ausencia de un valor en una columna, no un valor en sí mismo.
+- Operadores para manejar nulos:
+  - **IS NULL**: Verifica si una columna es nula.
+  - **IS NOT NULL**: Verifica si una columna no es nula.
+- **COALESCE(columna, valor_por_defecto)**: Devuelve el valor de la columna si no es nulo; de lo contrario, devuelve el valor por defecto especificado.
 
-Quan es realitza una consulta de dades, els nuls es poden interpretar com valors mitjançant la funció COALESCE(columna, valor si nul). Esta funció retorna valor si nul en les files on columna es nula; si no, retorna el valor de columna.
-
-SELECT codcli, nombre, COALESCE(codpostal, 0\) AS postal, codpostal AS postal\_null
-
+**Ejemplo**:
+```sql
+SELECT codcli, nombre, COALESCE(codpostal, 0) AS postal, codpostal AS postal_null
 FROM clientes
+WHERE codcli < 150
+AND (codpostal = 0 OR codpostal IS NULL);
+```
+- Este ejemplo muestra el código, nombre y código postal de los clientes con **codcli** menor a 150, reemplazando los valores nulos en **codpostal** por 0.
+- La condición `(codpostal = 0 OR codpostal IS NULL)` puede simplificarse usando `COALESCE(codpostal, 0) = 0`.
 
-WHERE codcli \< 150
+## Consideraciones Importantes
 
-AND (codpostal \= 0 OR codpostal IS NULL);
-
-Fixat que la condició (limite\_credito \= 0 OR limite\_credito IS NULL) es pot substituir per COALESCE(limite\_credito, 0\) \= 0\.
-
-**Lo que no hi ha que oblidar**
-
-Hi ha que tenir sempre molt de compte amb els nuls: si una columna accepta nuls, agafa la precaució de tractar-los quan et bases en aquesta columna per a establir alguna restricció (WHERE).
-
-Deus ser capaç de determinar sempre, a priori, si necessites utilitzar el modificador DISTINCT (sense necessitat de provar la sentencia).
-
-Mots SGBD implementen la clàusula DISTINCT amb algoritmes de ordenació. En aquest cas, si una sentencia que utilitza DISTINCT deu mostrar, a més, el resultat ordenat, se podria prescindir de la clàusula ORDER BY (i per lo tant de una segona ordenació que consumeix temps de execució).
-
-Per açò el únic que has de fer es ordenar convenientment les columnes a mostrar en la clàusula SELECT.
-
+- **Precaución con nulos**: Si una columna acepta valores nulos, siempre considera su manejo en las condiciones de la cláusula **WHERE** para evitar resultados inesperados.
+- **Uso de DISTINCT**: Determina si es necesario usar **DISTINCT** analizando si las columnas seleccionadas podrían generar duplicados (por ejemplo, si no incluyen la clave primaria). Evita pruebas innecesarias ejecutando la consulta.
+- **Optimización con DISTINCT**: En muchos SGBD, **DISTINCT** implica un algoritmo de ordenación. Si el resultado debe mostrarse ordenado, puedes evitar **ORDER BY** ajustando el orden de las columnas en **SELECT**, ya que **DISTINCT** ya ordena internamente.
