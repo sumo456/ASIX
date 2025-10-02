@@ -18,6 +18,7 @@ FROM oficinas
 WHERE region = 'Este';
 ```
 ![alt text](image-1.png)
+
 3. **Lista de las oficinas de ventas con sus objetivos y ventas de la región Este cuyas ventas exceden a sus objetivos, ordenadas alfabéticamente por ciudad**  
 ```sql
 SELECT ciudad, objetivo, ventas
@@ -26,6 +27,7 @@ WHERE region = 'Este' AND ventas > objetivo
 ORDER BY ciudad;
 ```
 ![alt text](image-2.png)
+
 4. **Objetivos y ventas promedio para las oficinas de la región Este**  
 ```sql
 SELECT AVG(objetivo) AS objetivo_promedio, AVG(ventas) AS ventas_promedio
@@ -33,6 +35,7 @@ FROM oficinas
 WHERE region = 'Este';
 ```
 ![alt text](image-3.png)
+
 5. **Nombre, cuota y ventas del empleado número 107**  
 ```sql
 SELECT nombre, cuota, ventas
@@ -46,6 +49,7 @@ WHERE codemp = 107;
 SELECT AVG(ventas) AS ventas_promedio
 FROM empleados;
 ```
+![alt text](image-5.png)
 
 7. **Nombre y fecha de contrato de vendedores con ventas superiores a 500,000 ptas**  
 ```sql
