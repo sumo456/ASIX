@@ -39,7 +39,7 @@ SELECT nombre, cuota, ventas
 FROM empleados
 WHERE codemp = 107;
 ```
-
+![alt text](image-4.png)
 6. **Ventas promedio de los vendedores**  
 ```sql
 SELECT AVG(ventas) AS ventas_promedio
