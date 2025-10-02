@@ -13,11 +13,11 @@ FROM oficinas;
 
 2. **Lista de las oficinas de ventas de la región Este con sus objetivos y ventas**  
 ```sql
-SELECT ciudad, objetivo, ventas
+SELECT oficina, objetivo, ventas
 FROM oficinas
 WHERE region = 'Este';
 ```
-
+![alt text](image-1.png)
 3. **Lista de las oficinas de ventas con sus objetivos y ventas de la región Este cuyas ventas exceden a sus objetivos, ordenadas alfabéticamente por ciudad**  
 ```sql
 SELECT ciudad, objetivo, ventas
