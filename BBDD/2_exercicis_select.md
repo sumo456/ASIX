@@ -32,7 +32,7 @@ SELECT AVG(objetivo) AS objetivo_promedio, AVG(ventas) AS ventas_promedio
 FROM oficinas
 WHERE region = 'Este';
 ```
-
+![alt text](image-3.png)
 5. **Nombre, cuota y ventas del empleado número 107**  
 ```sql
 SELECT nombre, cuota, ventas
