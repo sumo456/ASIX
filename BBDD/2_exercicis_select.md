@@ -25,7 +25,7 @@ FROM oficinas
 WHERE region = 'Este' AND ventas > objetivo
 ORDER BY ciudad;
 ```
-
+![alt text](image-2.png)
 4. **Objetivos y ventas promedio para las oficinas de la región Este**  
 ```sql
 SELECT AVG(objetivo) AS objetivo_promedio, AVG(ventas) AS ventas_promedio
