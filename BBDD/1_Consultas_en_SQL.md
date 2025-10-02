@@ -1,169 +1,79 @@
-# Operadores y Funciones en SQL
+# Consultas en SQL: SELECT, FROM y WHERE
 
-Este documento presenta una descripción detallada de los operadores y funciones disponibles en SQL, con un enfoque en PostgreSQL. Se incluyen los tipos de datos más comunes, operadores lógicos, de comparación, matemáticos, funciones para cadenas de caracteres, fechas y estructuras condicionales. Aunque muchos son estándar, cada SGBD puede ofrecer funcionalidades adicionales, por lo que es recomendable consultar el manual oficial de PostgreSQL para obtener información específica.
+Este documento presenta una guía clara y estructurada sobre cómo formular consultas básicas en SQL utilizando la sentencia **SELECT**, con un enfoque en las cláusulas **FROM**, **WHERE** y **ORDER BY**, así como el manejo de valores nulos y el modificador **DISTINCT**. Está diseñado para facilitar la comprensión y práctica de consultas en una base de datos, específicamente en PostgreSQL.
 
-## 1. Tipos de Datos
+## Objetivos
 
-Los tipos de datos más relevantes utilizados en la base de datos de prácticas son los siguientes (todos cumplen con el estándar SQL):
+- Formular consultas simples en SQL usando la sentencia **SELECT** sobre una sola tabla, empleando las cláusulas **FROM**, **WHERE** y **ORDER BY**.
+- Determinar cuándo es necesario usar el modificador **DISTINCT**.
+- Gestionar valores nulos con el operador **IS NULL** y la función **COALESCE**.
 
-- **VARCHAR(n)**: Cadena de caracteres de longitud máxima *n*.
-- **NUMERIC(n,m)**: Número con *n* dígitos totales, de los cuales *m* son decimales.
-- **DATE**: Almacena fechas. Para incluir hora, se usa **TIMESTAMP**.
-- **BOOLEAN**: Representa valores lógicos **TRUE** (verdadero, se muestra como 't') o **FALSE** (falso, se muestra como 'f'). Aunque no se usa en la base de datos de prácticas, es un tipo relevante.
+## Estructura de la Sentencia SELECT
 
-**Nota**: El valor **NULL** indica ausencia de valor y no se visualiza al imprimirse. La función **COALESCE** permite reemplazar valores nulos por un valor específico.
+La sentencia **SELECT** se compone de varias cláusulas que se procesan en el siguiente orden lógico:
 
-## 2. Operadores Lógicos
+```sql
+SELECT [DISTINCT] { * | columna [, columna] }
+FROM taula
+[WHERE condición_de_búsqueda]
+[ORDER BY columna [ASC|DESC] [, columna [ASC|DESC]];
+```
 
-Los operadores lógicos en PostgreSQL (**AND**, **OR**, **NOT**) siguen una lógica booleana de tres valores, considerando **TRUE**, **FALSE** y **NULL**. A continuación, se muestra la tabla de verdad:
-
-| a       | b       | a AND b | a OR b | NOT b  |
-|---------|---------|---------|--------|--------|
-| True    | True    | True    | True   | False  |
-| True    | False   | False   | True   | True   |
-| True    | Null    | Null    | True   | Null   |
-| False   | False   | False   | False  | True   |
-| False   | Null    | False   | Null   | Null   |
-| Null    | Null    | Null    | Null   | Null   |
-
-## 3. Operadores de Comparación
-
-Los operadores de comparación permiten evaluar condiciones en las cláusulas **SELECT** y **WHERE**:
-
-- **<**: Menor que.
-- **>**: Mayor que.
-- **<=**: Menor o igual que.
-- **>=**: Mayor o igual que.
-- **=**: Igual que.
-- **!=**: Distinto de.
-- **BETWEEN x AND y**: Equivale a `>= x AND <= y`.
-- **NOT BETWEEN x AND y**: Equivale a `< x OR > y`.
-- **IS NULL**: Devuelve **TRUE** si el valor es nulo.
-- **IS NOT NULL**: Devuelve **TRUE** si el valor no es nulo.
-- **IN (v1, v2, ...)**: Equivale a `= v1 OR = v2 OR ...`.
-
-## 4. Operadores Matemáticos
-
-Los operadores matemáticos permiten realizar cálculos numéricos:
-
-- **+**: Suma.
-- **-**: Resta.
-- *** : Multiplicación.
-- **/**: División (trunca el resultado en divisiones entre enteros).
-- **%**: Resto de la división entera.
-- **^**: Potencia (ejemplo: `3^2 = 9`).
-- **|/**: Raíz cuadrada (ejemplo: `|/25 = 5`).
-- **||/**: Raíz cúbica (ejemplo: `||/27 = 3`).
-- **!**: Factorial (ejemplo: `5! = 120`).
-- **!!**: Factorial como operador prefijo (ejemplo: `!!5 = 120`).
-- **@**: Valor absoluto.
-
-**Nota**: No se incluyen operadores para datos binarios.
-
-## 5. Funciones Matemáticas
-
-Algunas funciones matemáticas comunes en PostgreSQL son:
-
-- **ABS(x)**: Valor absoluto de *x*.
-- **SIGN(x)**: Signo de *x* (-1, 0, o 1).
-- **MOD(x, y)**: Resto de la división de *x* entre *y*.
-- **SQRT(x)**: Raíz cuadrada de *x*.
-- **CBRT(x)**: Raíz cúbica de *x*.
-- **CEIL(x)**: Entero más cercano por encima de *x*.
-- **FLOOR(x)**: Entero más cercano por debajo de *x*.
-- **ROUND(x)**: Redondea *x* al entero más cercano.
-- **ROUND(x, n)**: Redondea *x* a *n* dígitos decimales (si *n* es positivo) o al múltiplo de `10^n` más cercano (si *n* es negativo).
-- **TRUNC(x)**: Trunca *x* al entero.
-- **TRUNC(x, n)**: Trunca *x* a *n* dígitos decimales (si *n* es positivo) o al múltiplo de `10^n` más cercano por debajo (si *n* es negativo).
-
-PostgreSQL también ofrece funciones para logaritmos, trigonometría y conversiones entre grados y radianes.
-
-## 6. Operadores y Funciones de Cadenas de Caracteres
-
-Las cadenas de caracteres en SQL se delimitan con comillas simples ('cadena'). Las principales operaciones son:
-
-- **||**: Concatena dos cadenas.
-- **LIKE expr**: Devuelve **TRUE** si la cadena coincide con el patrón *expr*. Comodines: `_` (un carácter), `%` (cero o más caracteres).
-- **LENGTH(cadena)**: Devuelve el número de caracteres.
-- **CHAR_LENGTH(cadena)**: Equivalente a **LENGTH** (estándar SQL).
-- **POSITION(subcadena IN cadena)**: Posición inicial de *subcadena* en *cadena*.
-- **SUBSTR(cadena, n [, long])**: Extrae la subcadena desde la posición *n* con longitud máxima *long* (si no se especifica, hasta el final).
-- **SUBSTRING(cadena FROM n [FOR long])**: Equivalente a **SUBSTR** (estándar SQL).
-- **LOWER(cadena)**: Convierte la cadena a minúsculas.
-- **UPPER(cadena)**: Convierte la cadena a mayúsculas.
-- **BTRIM(cadena)**: Elimina espacios al inicio y final.
-- **LTRIM(cadena)**: Elimina espacios al inicio.
-- **RTRIM(cadena)**: Elimina espacios al final.
-- **BTRIM(cadena, lista)**: Elimina caracteres de *lista* al inicio y final.
-- **LTRIM(cadena, lista)**: Elimina caracteres de *lista* al inicio.
-- **RTRIM(cadena, lista)**: Elimina caracteres de *lista* al final.
-- **TRIM([BOTH | LEADING | TRAILING] lista FROM cadena)**: Estándar SQL para **BTRIM**, **LTRIM** o **RTRIM**.
-- **CHR(n)**: Devuelve el carácter correspondiente al código ASCII *n*.
-- **INITCAP(cadena)**: Convierte la primera letra de cada palabra a mayúscula.
-- **LPAD(cadena, n [, c])**: Rellena la cadena por la izquierda con el carácter *c* (o espacios) hasta alcanzar longitud *n*. Trunca si excede *n*.
-- **RPAD(cadena, n [, c])**: Similar a **LPAD**, pero rellena por la derecha.
+### Desglose de Cláusulas
+- **FROM**: Especifica la tabla sobre la que se realiza la consulta.
+- **WHERE**: Filtra las filas que cumplen una condición booleana, combinando comparaciones con operadores lógicos **AND** y **OR**.
+- **SELECT**: Define las columnas o expresiones a mostrar en el resultado. El asterisco (*) selecciona todas las columnas de la tabla.
+- **DISTINCT**: Elimina filas duplicadas del resultado. Esto es relevante cuando las columnas seleccionadas no incluyen la clave primaria (o parte de ella, si es compuesta).
+- **ORDER BY**: Ordena el resultado según una o más columnas, en orden ascendente (**ASC**) o descendente (**DESC**).
 
 **Ejemplo**:
 ```sql
-SELECT BTRIM('--++-+Hola+-cara-+cola++--+-', '+-');
-SELECT TRIM(BOTH '+-' FROM '--++-+Hola+-cara-+cola++--+-');
+SELECT *
+FROM clientes
+ORDER BY codpue DESC, codcli;
 ```
+Este ejemplo muestra todos los datos de la tabla **clientes**, ordenados por **codpue** (descendente) y, dentro de cada pueblo, por **codcli** (ascendente).
 
-## 7. Operadores y Funciones de Fecha
+## Cláusula ORDER BY
 
-Para configurar el formato de fecha en PostgreSQL al estilo europeo (día/mes/año con separador '/'):
-```sql
-SET DATESTYLE TO EUROPEAN, SQL;
-```
+- **Uso**: Ordena los resultados de la consulta según una o más columnas.
+- **Opciones**: **ASC** (ascendente, por defecto) o **DESC** (descendente).
+- **Múltiples columnas**: Las filas se ordenan primero por la primera columna mencionada, luego por la segunda, y así sucesivamente.
 
-Funciones de conversión entre tipos:
-- **TO_CHAR(dato, formato)**: Convierte *dato* a cadena según *formato*.
-- **TO_DATE(dato, formato)**: Convierte una cadena a fecha según *formato*.
-- **TO_NUMBER(dato, formato)**: Convierte una cadena a número según *formato*.
+## Expresiones en SELECT y WHERE
 
-**Patrones de formato**:
-- **Fecha/hora**: `HH` (hora 1-12), `HH24` (hora 0-23), `MI` (minutos), `SS` (segundos), `YYYY` (año), `MONTH` (nombre del mes), `DD` (día del mes), etc.
-- **Numéricos**: `9` (dígito), `S` (signo), `.` (punto decimal), `,` (separador de miles).
+- Las cláusulas **SELECT** y **WHERE** pueden incluir expresiones con columnas, constantes y operadores.
+- En **SELECT**, las expresiones se pueden renombrar con el operador **AS** para mejorar la legibilidad del resultado.
+- En **ORDER BY**, una expresión de la cláusula **SELECT** se puede referenciar por su posición numérica en la lista de selección.
 
 **Ejemplo**:
 ```sql
-SELECT TO_CHAR(CURRENT_TIMESTAMP, 'HH12 horas MI m. SS seg.');
-SELECT TO_NUMBER('-12,454.8', 'S999,999.9');
+SELECT precio, ROUND(precio * 0.8, 2) AS rebajado
+FROM articulos
+ORDER BY 2;
 ```
+Este ejemplo muestra el precio original y un precio con un 20% de descuento (redondeado a 2 decimales), ordenado por el precio rebajado.
 
-Funciones comunes:
-- **CURRENT_DATE**: Devuelve la fecha actual (tipo **DATE**).
-- **CURRENT_TIME**: Devuelve la hora actual (tipo **TIME**).
-- **CURRENT_TIMESTAMP**: Devuelve fecha y hora actuales (tipo **TIMESTAMP**).
-- **EXTRACT(campo FROM dato)**: Extrae una parte de una fecha/hora (ejemplo: `day`, `month`, `year`, `hour`).
-  - Ejemplo: `SELECT EXTRACT(week FROM TO_DATE('7/11/2005', 'dd/mm/yyyy'));`
-- Sumar/restar días: Usa `+` o `-` (ejemplo: `CURRENT_DATE + 7`).
+## Manejo de Valores Nulos
 
-## 8. Función CASE
-
-La función **CASE** permite lógica condicional en consultas SQL, similar a sentencias condicionales en lenguajes procedurales.
+- Un valor **NULL** indica la ausencia de un valor en una columna, no un valor en sí mismo.
+- Operadores para manejar nulos:
+  - **IS NULL**: Verifica si una columna es nula.
+  - **IS NOT NULL**: Verifica si una columna no es nula.
+- **COALESCE(columna, valor_por_defecto)**: Devuelve el valor de la columna si no es nulo; de lo contrario, devuelve el valor por defecto especificado.
 
 **Ejemplo**:
 ```sql
-SELECT codart, precio,
-       CASE WHEN stock > 500 THEN precio * 0.8
-            WHEN stock BETWEEN 200 AND 500 THEN precio * 0.9
-            ELSE precio
-       END AS precio_con_descuento
-FROM articulos;
+SELECT codcli, nombre, COALESCE(codpostal, 0) AS postal, codpostal AS postal_null
+FROM clientes
+WHERE codcli < 150
+AND (codpostal = 0 OR codpostal IS NULL);
 ```
+- Este ejemplo muestra el código, nombre y código postal de los clientes con **codcli** menor a 150, reemplazando los valores nulos en **codpostal** por 0.
+- La condición `(codpostal = 0 OR codpostal IS NULL)` puede simplificarse usando `COALESCE(codpostal, 0) = 0`.
 
-Este ejemplo aplica descuentos según el stock: 20% si es mayor a 500, 10% si está entre 200 y 500, o sin descuento en otros casos.
+## Consideraciones Importantes
 
-## 9. Funciones COALESCE y NULLIF
-
-- **COALESCE(valor [, ...])**: Devuelve el primer valor no nulo de la lista.
-- **NULLIF(valor1, valor2)**: Devuelve **NULL** si *valor1* y *valor2* son iguales; de lo contrario, devuelve *valor1*.
-
-**Ejemplo**:
-```sql
-SELECT COALESCE(stock, stock_min, -1) FROM articulos;
-SELECT NULLIF(stock, stock_min) FROM articulos;
-```
-
-Ambas funciones se convierten internamente en expresiones **CASE**.
+- **Precaución con nulos**: Si una columna acepta valores nulos, siempre considera su manejo en las condiciones de la cláusula **WHERE** para evitar resultados inesperados.
+- **Uso de DISTINCT**: Determina si es necesario usar **DISTINCT** analizando si las columnas seleccionadas podrían generar duplicados (por ejemplo, si no incluyen la clave primaria). Evita pruebas innecesarias ejecutando la consulta.
+- **Optimización con DISTINCT**: En muchos SGBD, **DISTINCT** implica un algoritmo de ordenación. Si el resultado debe mostrarse ordenado, puedes evitar **ORDER BY** ajustando el orden de las columnas en **SELECT**, ya que **DISTINCT** ya ordena internamente.
