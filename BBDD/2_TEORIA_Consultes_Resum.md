@@ -1,53 +1,63 @@
-# CONSULTES RESUM
+# Resumen de Consultas en SQL
 
----
+Este documento ofrece un resumen claro y estructurado sobre las funciones de agregación en SQL, con un enfoque en su comportamiento, manejo de valores NULL, uso de DISTINCT, y las reglas para procesar consultas. Se incluyen explicaciones detalladas para facilitar su comprensión.
 
-\*SUM.  
-\*AVG.  
-\*MIN, MAX.  
-.Determinar el mínim i màxim de valors numèrics és trivial.  
-.Els valors alfanumèrics s’ordenen segons la taula de codis pròpia de la màquina. Per tant no és el mateix el resultat obtingut en una màquina basada en la taula ASCII que en la taula EBCDIC.  
-.Les dates i hores es comparen cronològicament.  
-\*COUNT.  
-\*COUNT(\*).  
-.En realitat, count compta les línies que hi ha, és indiferent el camp que usem per a fer-ho. És per això que podem usar l’operador COUNT(\*) on l’\* no significa tots els camps sinó que és indiferent quin d’ells s’utilitzi.  
-\*Valors NULL i funcions de columna  
-.L’estèndard ANSI indica que els valors NULL són ignorats per les funcions de columna.  
-.Count(\*) comptarà quantes files hi ha, independentment que continguin valors NULL.  
-.Count(columna) comptarà NOMÉS les files no NULL.
+## 1. Funciones de Agregación
 
-.SUM() i AVG() també estan afectades per valors NULL. Les dues ignoren aquest valor. Llavors poden passar contradiccions com: (SUM(A)-SUM(B)) \<\> (SUM(A-B)). Les dues expressions no seràn iguals si algún dels elements de A o de B és NULL.   
-.Suposem que B conté un valor NULL, i les dues columnes són de 10 files. SUM(A) suma les deu files, i li restem SUM(B) que suma nou files. SUM(A-B) suma només nou files perquè A-B en una fila fa una resta de un valor – null, i això genera null.  
-.SUM(A)-SUM(B) significa la suma de A menys la suma de B.  
-.SUM(A-B) significa la suma de fer (A-B). I no té perquè ser el mateix que l’anterior.
+Las funciones de agregación procesan un conjunto de valores para devolver un único resultado. Las principales son:
 
-NORMES:  
-.Si  totes les dades de la columna són NULL, SUM(), AVG(), MIN(), MAX() retornen NULL; i la funció COUNT() retorna 0\.  
-.Si no hi ha dades a la columna (està buida), les funcions SUM(), AVG(), MIN(), MAX() retornen 0\.  
-.La funció COUNT(\*) compta files, i no depèn de la presència o absència de valors NULL en la columna. Si no hi ha files retorna 0\.
+- **SUM**: Calcula la suma de los valores de una columna numérica.
+- **AVG**: Calcula el promedio de los valores de una columna numérica.
+- **MIN** y **MAX**: Determinan el valor mínimo y máximo, respectivamente.
+  - Para valores numéricos, el cálculo es directo.
+  - Para valores alfanuméricos, el orden depende de la codificación de la máquina (ASCII, EBCDIC, etc.).
+  - Para fechas y horas, la comparación es cronológica.
+- **COUNT**: Cuenta el número de filas o valores no nulos.
+  - **COUNT(*)**: Cuenta todas las filas, independientemente de si contienen valores NULL.
+  - **COUNT(columna)**: Cuenta solo las filas donde la columna especificada no es NULL.
 
-\*DISTINCT.  
-.Podem eliminar valors duplicats d’una columna ABANS d’aplicar la funció de columna cal escriure DISTINCT abans de l’argument de la funció. Per exemple: COUNT(DISTINCT TITULO)
+### Comportamiento con Valores NULL
+- Según el estándar ANSI, las funciones de agregación (excepto **COUNT(*)**) ignoran los valores NULL.
+- **Ejemplo de inconsistencia**:
+  - Si una columna tiene valores NULL, `SUM(A) - SUM(B)` no es necesariamente igual a `SUM(A - B)`.
+  - Supongamos dos columnas, A y B, con 10 filas, donde B tiene un valor NULL:
+    - `SUM(A)` suma 10 valores, `SUM(B)` suma 9 valores (ignora el NULL).
+    - `SUM(A - B)` suma solo 9 valores, ya que `A - NULL` resulta en NULL.
+  - Por lo tanto, `SUM(A) - SUM(B)` calcula la diferencia entre sumas, mientras que `SUM(A - B)` suma los resultados de restas individuales.
 
-\*És il·legal aniuar funcions de columna.  
-\*També és il·legal barrejar funcions de columna amb noms de columna ordinaris en la llista de selecció.
+### Reglas para Valores NULL y Columnas Vacías
+- Si todos los valores de una columna son NULL:
+  - **SUM**, **AVG**, **MIN**, **MAX** devuelven NULL.
+  - **COUNT(columna)** devuelve 0.
+- Si la columna está vacía (sin filas):
+  - **SUM**, **AVG**, **MIN**, **MAX** devuelven 0.
+  - **COUNT(*)** devuelve 0.
+- **COUNT(*)** siempre cuenta filas, ignorando si las columnas contienen NULL.
 
-REGLES:  
-\=======
+### Uso de DISTINCT
+- Para eliminar valores duplicados antes de aplicar una función de agregación, se usa **DISTINCT** dentro de la función.
+  - Ejemplo: `COUNT(DISTINCT TITULO)` cuenta solo los valores únicos de la columna TITULO.
 
-1) Si la sentència és un UNION de sentències SELECT, aplicar les passes 2 fins a 5 a cada una de les sentències SELECT per generar els seus resultats individuals.
+### Restricciones
+- No se permite anidar funciones de agregación (por ejemplo, `SUM(AVG(columna))` es ilegal).
+- No se puede mezclar funciones de agregación con columnas ordinarias en la lista de selección, salvo que se usen cláusulas como **GROUP BY**.
 
-2) Formar el producte de les taules indicades en la clàusula FROM. Si la clàusula FROM designa una sola taula, el producte és la taula.
+## 2. Reglas para Procesar Consultas SQL
 
-3) Si hi ha una clàusula WHERE, aplicar la seva condició  de búsqueda a cada fila de la taula producte, retenint aquelles files per a les quals la condició de búsqueda és TRUE (i descartant aquelles en les quals és FALSE o NULL).
+El procesamiento de una consulta SQL sigue un orden lógico definido por el estándar. A continuación, se describen los pasos:
 
-4) Per a cada fila restant, calcular el valor de cada element en la llista de selecció per produir una única fila de resultats. Per a cada referència de columna simple, usar el valor de la columna en la fila (o grup de files) actual. Per a una funció de columna, utilitzar com argument el conjunt sencer de files.
+1. **UNION**: Si la consulta incluye un **UNION**, procesar cada sentencia **SELECT** individualmente (pasos 2 a 5) para generar sus resultados parciales.
 
- 
+2. **FROM**: Formar el producto cartesiano de las tablas especificadas en la cláusula **FROM**. Si solo hay una tabla, el resultado es la tabla misma.
 
-5) Si s’especifica SELECT DISTINCT, eliminar les files duplicades dels resultats que s’ha produït.
+3. **WHERE**: Aplicar la condición de la cláusula **WHERE** a cada fila del producto cartesiano, reteniendo solo las filas donde la condición es **TRUE**. Las filas con condiciones **FALSE** o **NULL** se descartan.
 
-6) Si la sentència és UNION de sentències SELECT, barrejar els resultats de consulta de les sentències individuals en una única taula de resultats. Eliminar les files duplicades a menys que s’especifiqui UNION ALL.
+4. **SELECT**: Para cada fila restante, calcular los valores de la lista de selección:
+   - Para columnas simples, usar el valor de la columna en la fila actual.
+   - Para funciones de agregación, usar el conjunto completo de filas (o grupos si se usa **GROUP BY**).
 
-7) Si hi ha una clàusula ORDER BY, ordenar la formació dels resultats de la consulta.
+5. **DISTINCT**: Si se especifica **SELECT DISTINCT**, eliminar las filas duplicadas del resultado.
 
+6. **UNION**: Si la consulta es un **UNION**, combinar los resultados de las sentencias **SELECT** individuales en una sola tabla. Eliminar duplicados, salvo que se use **UNION ALL**.
+
+7. **ORDER BY**: Si hay una cláusula **ORDER BY**, ordenar los resultados según los criterios especificados.
