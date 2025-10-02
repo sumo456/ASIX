@@ -71,18 +71,21 @@ FROM oficinas;
 SELECT nombre, cuota, cuota + (ventas * 0.03) AS nueva_cuota
 FROM empleados;
 ```
+![alt text](image-8.png)
 
 10. **Nombre, mes y año de contrato para cada vendedor**  
 ```sql
 SELECT nombre, MONTH(fecha_contrato) AS mes_contrato, YEAR(fecha_contrato) AS anio_contrato
 FROM empleados;
 ```
+![alt text](image-9.png)
 
 11. **Ventas por ciudad, intercalando la frase 'tiene ventas de'**  
 ```sql
 SELECT ciudad, 'tiene ventas de' AS descripcion, ventas
 FROM oficinas;
 ```
+![alt text](image-10.png)
 
 12. **Oficinas donde las ventas exceden el objetivo (ciudad, ventas y objetivo)**  
 ```sql
