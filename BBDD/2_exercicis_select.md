@@ -57,12 +57,14 @@ SELECT nombre, fecha_contrato
 FROM empleados
 WHERE ventas > 500000;
 ```
+![alt text](image-6.png)
 
 8. **Ciudad, región y ventas por encima o por debajo del objetivo para cada oficina**  
 ```sql
 SELECT ciudad, region, (ventas - objetivo) AS diferencia_ventas_objetivo
 FROM oficinas;
 ```
+![alt text](image-7.png)
 
 9. **Efecto de elevar la cuota de cada vendedor un 3% de sus ventas anuales**  
 ```sql
