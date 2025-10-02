@@ -85,79 +85,78 @@ FROM empleados;
 SELECT ciudad, 'tiene ventas de' AS descripcion, ventas
 FROM oficinas;
 ```
-![alt text](image-10.png)
 
-12. **Oficinas donde las ventas exceden el objetivo (ciudad, ventas y objetivo)**  
+1.  **Oficinas donde las ventas exceden el objetivo (ciudad, ventas y objetivo)**  
 ```sql
 SELECT ciudad, ventas, objetivo
 FROM oficinas
 WHERE ventas > objetivo;
 ```
 
-13. **Empleados dirigidos por Bob Smith (empleado 104)**  
+1.  **Empleados dirigidos por Bob Smith (empleado 104)**  
 ```sql
 SELECT nombre
 FROM empleados
 WHERE director = 104;
 ```
 
-14. **Vendedores contratados antes de 1988**  
+1.  **Vendedores contratados antes de 1988**  
 ```sql
 SELECT nombre, fecha_contrato
 FROM empleados
 WHERE YEAR(fecha_contrato) < 1988;
 ```
 
-15. **Oficinas cuyas ventas están por debajo del 80% del objetivo**  
+1.  **Oficinas cuyas ventas están por debajo del 80% del objetivo**  
 ```sql
 SELECT ciudad, ventas, objetivo
 FROM oficinas
 WHERE ventas < (objetivo * 0.8);
 ```
 
-16. **Oficinas cuyo objetivo no es 800,000 ptas**  
+1.  **Oficinas cuyo objetivo no es 800,000 ptas**  
 ```sql
 SELECT ciudad, objetivo
 FROM oficinas
 WHERE objetivo != 800000;
 ```
 
-17. **Nombre y límite de crédito del cliente número 2107**  
+1.  **Nombre y límite de crédito del cliente número 2107**  
 ```sql
 SELECT nombre, limite_credito
 FROM clientes
 WHERE codcli = 2107;
 ```
 
-18. **Pedidos con importe entre 20,000 y 29,999 (número e importe)**  
+1.  **Pedidos con importe entre 20,000 y 29,999 (número e importe)**  
 ```sql
 SELECT num_pedido, importe
 FROM pedidos
 WHERE importe BETWEEN 20000 AND 29999;
 ```
 
-19. **Vendedores cuyas ventas no están entre el 80% y el 120% de su cuota**  
+1.  **Vendedores cuyas ventas no están entre el 80% y el 120% de su cuota**  
 ```sql
 SELECT nombre, ventas, cuota
 FROM empleados
 WHERE ventas NOT BETWEEN (cuota * 0.8) AND (cuota * 1.2);
 ```
 
-20. **Empresas cuyo nombre empieza por 'Smith' y su límite de crédito**  
+1.  **Empresas cuyo nombre empieza por 'Smith' y su límite de crédito**  
 ```sql
 SELECT nombre, limite_credito
 FROM clientes
 WHERE nombre LIKE 'Smith%';
 ```
 
-21. **Productos cuyo ID comienza con 'A%BC'**  
+1.  **Productos cuyo ID comienza con 'A%BC'**  
 ```sql
 SELECT idproducto
 FROM productos
 WHERE idproducto LIKE 'A%BC%';
 ```
 
-22. **Vendedores que cumplen alguna de las siguientes condiciones:  
+1.  **Vendedores que cumplen alguna de las siguientes condiciones:  
    a) Trabajan en Denver, New York o Chicago; o  
    b) No tienen director y fueron contratados a partir de junio de 2003; o  
    c) Están por encima de la cuota, pero tienen ventas de 600,000 o menos**  
@@ -169,21 +168,21 @@ WHERE ciudad IN ('Denver', 'New York', 'Chicago')
    OR (ventas > cuota AND ventas <= 600000);
 ```
 
-23. **Ventas de cada oficina, ordenadas alfabéticamente por región y dentro de cada región por ciudad**  
+1.  **Ventas de cada oficina, ordenadas alfabéticamente por región y dentro de cada región por ciudad**  
 ```sql
 SELECT region, ciudad, ventas
 FROM oficinas
 ORDER BY region, ciudad;
 ```
 
-24. **Oficinas clasificadas en orden descendente de ventas**  
+1.  **Oficinas clasificadas en orden descendente de ventas**  
 ```sql
 SELECT ciudad, ventas
 FROM oficinas
 ORDER BY ventas DESC;
 ```
 
-25. **Oficinas clasificadas alfabéticamente por región y dentro de cada región en orden descendente de rendimiento de ventas (rendimiento = ventas - objetivo)**  
+1.  **Oficinas clasificadas alfabéticamente por región y dentro de cada región en orden descendente de rendimiento de ventas (rendimiento = ventas - objetivo)**  
 ```sql
 SELECT region, ciudad, (ventas - objetivo) AS rendimiento
 FROM oficinas
