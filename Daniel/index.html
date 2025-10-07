@@ -8,6 +8,91 @@
 <body
     <p>30/09/2025</p>
     <p>Today I started my diary. Today talk about the history with internet. </p>
+    <p>7/10/2025</p>
+    <p>Today talk about the history of browsers and see a video. I aproved a test. I'm happy!!</p>
+    <title>Animación de Celebración</title>
+    <style>
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: #f0f0f0; 
+        }
+        canvas { 
+            border: 2px solid #333; 
+            background-color: #fff; 
+        }
+    </style>
+    <canvas id="celebrationCanvas" width="400" height="200"></canvas>
+    <script>
+        const canvas = document.getElementById('celebrationCanvas');
+        const ctx = canvas.getContext('2d');
 
+        let particles = []; // Array para partículas
+        let lastSpawnTime = 0; // Controla el tiempo de la última generación
+        const spawnInterval = 2000; // Intervalo entre explosiones (2 segundos)
+
+        // Clase para las partículas
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 5; // Tamaño aleatorio
+                this.speedX = Math.random() * 8 - 4; // Velocidad horizontal aleatoria
+                this.speedY = Math.random() * 8 - 4; // Velocidad vertical aleatoria
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`; // Color aleatorio
+                this.life = 60; // Duración de la partícula
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size *= 0.95; // Reducir tamaño
+                this.life--;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle(canvas.width / 2, canvas.height / 2));
+            }
+        }
+
+        function draw() {
+            // Limpiar el canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar y actualizar partículas
+            particles.forEach((particle, index) => {
+                particle.update();
+                particle.draw();
+                if (particle.life <= 0) {
+                    particles.splice(index, 1); // Eliminar partículas terminadas
+                }
+            });
+
+            // Generar nuevas partículas cada 2 segundos
+            const currentTime = Date.now();
+            if (currentTime - lastSpawnTime > spawnInterval) {
+                createParticles();
+                lastSpawnTime = currentTime;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        // Iniciar la animación con la primera explosión
+        createParticles();
+        draw();
+    </script>
 </body>
 </html>
