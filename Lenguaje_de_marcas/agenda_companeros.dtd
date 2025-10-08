@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/agenda_companeros.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE agenda SYSTEM "agenda_companeros.dtd">
+
+    <agenda>
+    ...
+    </agenda>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT agenda (contacto)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT contacto (nombre|primer_apellido|segundo_apellido|edad|hobbie|telefono|correo|adreca)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT nombre (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT primer_apellido (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT segundo_apellido (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT edad (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT hobbie (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT telefono (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT correo (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT adreca (direccion|ciudad|codi_postal)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT direccion (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT ciudad (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT codi_postal (#PCDATA)>
