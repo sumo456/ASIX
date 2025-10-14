@@ -4,95 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diary Daniel Salvador Tarraga</title>
-</head>
-<body
-    <p>30/09/2025</p>
-    <p>Today I started my diary. Today talk about the history with internet. </p>
-    <p>7/10/2025</p>
-    <p>Today talk about the history of browsers and see a video. I aproved a test. I'm happy!!</p>
-    <title>Animación de Celebración</title>
     <style>
-        body { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            background-color: #f0f0f0; 
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
-        canvas { 
-            border: 2px solid #333; 
-            background-color: #fff; 
+        p {
+            max-width: 600px;
+            text-align: left;
+        }
+        .robot {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            margin-top: 20px;
+        }
+        .cabeza {
+            width: 60px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50px 50px 20px 20px;
+            position: absolute;
+            top: 0;
+            left: 20px;
+        }
+        .ojo {
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+        }
+        .ojo.izq { left: 15px; }
+        .ojo.der { left: 35px; }
+        .anim-parpadeo {
+            animation: parpadeo 1s infinite;
+        }
+        @keyframes parpadeo {
+            0%, 50% { height: 10px; }
+            51%, 99% { height: 2px; }
+            100% { height: 10px; }
+        }
+        .cuerpo {
+            width: 50px;
+            height: 40px;
+            background-color: #999;
+            position: absolute;
+            top: 30px;
+            left: 25px;
+        }
+        .brazo {
+            width: 20px;
+            height: 30px;
+            background-color: #bbb;
+            position: absolute;
+            top: 35px;
+        }
+        .brazo.izq { left: 5px; animation: mover-brazo 2s infinite; }
+        .brazo.der { right: 5px; animation: mover-brazo 2s infinite reverse; }
+        @keyframes mover-brazo {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+        }
+        .pierna {
+            width: 15px;
+            height: 30px;
+            background-color: #777;
+            position: absolute;
+            bottom: 0;
+        }
+        .pierna.izq { left: 20px; }
+        .pierna.der { right: 20px; }
+        .binary-wheel {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-top: 20px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: spin 5s linear infinite;
+        }
+        .binary-text {
+            position: absolute;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 12px;
+            animation: pulse 1.5s infinite;
+        }
+        .binary-text:nth-child(1) { transform: rotate(0deg) translate(40px); }
+        .binary-text:nth-child(2) { transform: rotate(45deg) translate(40px); }
+        .binary-text:nth-child(3) { transform: rotate(90deg) translate(40px); }
+        .binary-text:nth-child(4) { transform: rotate(135deg) translate(40px); }
+        .binary-text:nth-child(5) { transform: rotate(180deg) translate(40px); }
+        .binary-text:nth-child(6) { transform: rotate(225deg) translate(40px); }
+        .binary-text:nth-child(7) { transform: rotate(270deg) translate(40px); }
+        .binary-text:nth-child(8) { transform: rotate(315deg) translate(40px); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
-    <canvas id="celebrationCanvas" width="400" height="200"></canvas>
-    <script>
-        const canvas = document.getElementById('celebrationCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let particles = []; // Array para partículas
-        let lastSpawnTime = 0; // Controla el tiempo de la última generación
-        const spawnInterval = 2000; // Intervalo entre explosiones (2 segundos)
-
-        // Clase para las partículas
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 5 + 5; // Tamaño aleatorio
-                this.speedX = Math.random() * 8 - 4; // Velocidad horizontal aleatoria
-                this.speedY = Math.random() * 8 - 4; // Velocidad vertical aleatoria
-                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`; // Color aleatorio
-                this.life = 60; // Duración de la partícula
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.size *= 0.95; // Reducir tamaño
-                this.life--;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function createParticles() {
-            for (let i = 0; i < 50; i++) {
-                particles.push(new Particle(canvas.width / 2, canvas.height / 2));
-            }
-        }
-
-        function draw() {
-            // Limpiar el canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Dibujar y actualizar partículas
-            particles.forEach((particle, index) => {
-                particle.update();
-                particle.draw();
-                if (particle.life <= 0) {
-                    particles.splice(index, 1); // Eliminar partículas terminadas
-                }
-            });
-
-            // Generar nuevas partículas cada 2 segundos
-            const currentTime = Date.now();
-            if (currentTime - lastSpawnTime > spawnInterval) {
-                createParticles();
-                lastSpawnTime = currentTime;
-            }
-
-            requestAnimationFrame(draw);
-        }
-
-        // Iniciar la animación con la primera explosión
-        createParticles();
-        draw();
-    </script>
+</head>
+<body>
+    <p>30/09/2025</p>
+    <p>Today I started my diary. Today talk about the history with internet.</p>
+    <p>7/10/2025</p>
+    <p>Today talk about the history of browsers and see a video. I aproved a test. I'm happy!!</p>
+    <p>14/10/2025</p>
+    <p>A bit is a tiny 0 or 1 in a computer. A byte is 8 bits, like one letter. ASCII is a code to make letters from numbers. ANSI makes rules for codes like ASCII. Mapping and standards help computers match numbers to letters the same wa</p>
+    <div class="robot">
+        <div class="cabeza">
+            <div class="ojo izq anim-parpadeo"></div>
+            <div class="ojo der anim-parpadeo"></div>
+        </div>
+        <div class="cuerpo">
+            <div class="brazo izq"></div>
+            <div class="brazo der"></div>
+        </div>
+        <div class="pierna izq"></div>
+        <div class="pierna der"></div>
+    </div>
+    <div class="binary-wheel">
+        <span class="binary-text">0</span>
+        <span class="binary-text">1</span>
+        <span class="binary-text">0</span>
+        <span class="binary-text">1</span>
+        <span class="binary-text">1</span>
+        <span class="binary-text">0</span>
+        <span class="binary-text">1</span>
+        <span class="binary-text">0</span>
+    </div>
 </body>
 </html>
