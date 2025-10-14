@@ -22,12 +22,16 @@ Llista dels pobles on tenim venedors:
 | POZOAMARGO               |
 
 **Total:** 10 pobles
+**select p.nombre from vendedores v join pueblos p on v.codpue = p.codpue order by p.nombre;**
+Seleccionem el nom del poble (p.nombre) on hi ha venedors (VENDEDORES) i els ordenem. El JOIN connecta amb PUEBLOS per obtenir els noms.
 
 ---
 
 ## 2. Pobles amb clients
 
 **Total:** 130 pobles
+**select p.nombre from clientes c join pueblos p on c.codpue = p.codpue order by p.nombre;**
+Seleccionem el nom del poble (p.nombre) on hi ha clients (CLIENTES) i els ordenem.
 
 ---
 
@@ -38,6 +42,8 @@ Llista dels pobles on tenim venedors:
 | (Cap resultat) |
 
 **Total:** 0 pobles
+**select p.nombre from pueblos p join vendedores v on p.codpue = v.codpue join clientes c on p.codpue = c.codpue order by p.nombre;**
+Seleccionem els pobles (PUEBLOS) que tenen tant venedors (VENDEDORES) com clients (CLIENTES) mitjançant JOIN i els ordenem
 
 ---
 
