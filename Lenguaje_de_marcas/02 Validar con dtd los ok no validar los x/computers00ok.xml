@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE Programadores SYSTEM "computers00ok.dtd">
+<!DOCTYPE Programadores SYSTEM "validadorsxlm.dtd">
 <Programadores>
 	<Ordenador id="1" type="laptop" serial="123" name="uno">
 		<persona id="1">

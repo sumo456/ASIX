@@ -1,0 +1,37 @@
+<!ELEMENT Programadores (Ordenador+)>
+  
+  <!-- Define que cada "Ordenador" debe contener exactamente un elemento "persona" -->
+  <!ELEMENT Ordenador (persona)>
+  
+  <!-- Define los atributos permitidos para el elemento "Ordenador" -->
+<!-- Atributo "id": obligatorio, puede ser cualquier texto (CDATA) para permitir valores numéricos como "1", "2", etc. -->
+<!-- Atributo "type": opcional, restringido a los valores "laptop" o "workstation" -->
+<!-- Atributo "serial": obligatorio, cualquier texto (CDATA) para permitir valores como "123", "456", etc. -->
+<!-- Atributo "name": opcional, cualquier texto (CDATA) para permitir valores como "uno", "dos", etc. -->
+  <!ATTLIST Ordenador
+    id CDATA #REQUIRED     
+    type (laptop|workstation) #IMPLIED  
+    serial CDATA #REQUIRED  
+    name CDATA #IMPLIED     
+  >
+  
+  <!-- Define que el elemento "persona" debe contener los elementos "Nombre", "Apellido", y opcionalmente "Cumple" y "Altura", en ese orden -->
+  <!ELEMENT persona (Nombre, Apellido, Cumple?, Altura?)>
+  
+  <!-- Define el atributo "id" para el elemento "persona" -->
+<!-- Atributo "id": obligatorio, cualquier texto (CDATA) para permitir valores numéricos -->
+  <!ATTLIST persona
+    id CDATA #REQUIRED     
+  >
+  
+  <!-- Define que "Nombre" solo puede contener texto (datos de caracteres parseados) -->
+  <!ELEMENT Nombre (#PCDATA)>
+  
+  <!-- Define que "Apellido" solo puede contener texto -->
+  <!ELEMENT Apellido (#PCDATA)>
+  
+  <!-- Define que "Cumple" solo puede contener texto (opcional, definido en persona) -->
+  <!ELEMENT Cumple (#PCDATA)>
+  
+  <!-- Define que "Altura" solo puede contener texto (opcional, definido en persona) -->
+  <!ELEMENT Altura (#PCDATA)>
