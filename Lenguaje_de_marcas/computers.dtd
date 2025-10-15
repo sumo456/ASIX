@@ -1,0 +1,41 @@
+
+<!-- 
+    Primero he generado un DTD con boton secundario y generar DTD.
+    Una vez generado el DTD lo he restringido al máximo con CTRL+H y he quitado todos los *
+    he cambiado todos los pipes (|) por comas(,)
+    y he cambiado todos los (#IMPLIED) por (#REQUIRED).
+    Ahora al validar los xml me dan todos los errores.
+    En computers como hay más de 1, le pongo + ya que así tiene que haber 1 o +.
+    En el xml he tenido que agregar una letra ya que no validava el DTD y a serial le he agregado una S.
+    En la parte de !ELEMENT computer (name?,serial?,person?) hemos puesto ? ya que puede estar el atributo, o no.
+    En el apartado type, he visto que solo hay 2, laptop y workstation así que he abierto una lista con () y
+    los he puesto dentro, así lo restrinjo más.
+    En el ATTLIST person le he puesto un IDREF ya que hace referencia a que una persona puede tener un ordenador u otro.
+    Par finalizar, el elemento person tiene unos xml que no tienen birthDate ni height así que les he puesto ?
+-->
+<!ELEMENT computers (computer+)>
+
+<!ELEMENT computer (name?,serial?,person?)>
+<!ATTLIST computer
+    id ID #REQUIRED
+    type (laptop|workstation) #IMPLIED
+    serial CDATA #IMPLIED
+    name CDATA #IMPLIED
+  >
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT serial (#PCDATA)>
+
+<!ELEMENT person (firstname,lastname,birthDate?,height?)>
+<!ATTLIST person
+    id IDREF #REQUIRED
+  >
+
+<!ELEMENT firstname (#PCDATA)>
+
+<!ELEMENT lastname (#PCDATA)>
+
+<!ELEMENT birthDate (#PCDATA)>
+
+<!ELEMENT height (#PCDATA)>

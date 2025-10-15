@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Programadores SYSTEM "computers00ok.dtd">
+<Programadores>
+	<Ordenador id="1" type="laptop" serial="123">
+		<persona id="1">
+			<Nombre>Juan</Nombre>
+			<Apellido>Pérez</Apellido>	
+		</persona>
+	</Ordenador>
+	<Ordenador id="2" type="workstation" serial="456" name="dos">
+		<persona id="2">
+			<Nombre>María</Nombre>
+			<Apellido>González</Apellido>
+			<Cumple>1970-04-20</Cumple>
+		</persona>
+	</Ordenador>
+	<Ordenador id="3" type="laptop" serial="789"  name="tres">
+		<persona id="3">
+			<Nombre>Pedro</Nombre>
+			<Apellido>García</Apellido>
+			<Cumple>1971-05-18</Cumple>
+		</persona>
+	</Ordenador>
+	<Ordenador id="4" serial="123" name="cuatro">
+		<persona id="1">
+			<Nombre>Juan</Nombre>
+			<Apellido>Pérez</Apellido>
+			<Cumple>1980-01-03</Cumple>	
+		</persona>
+	</Ordenador>
+</Programadores>

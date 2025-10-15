@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/computers00ok.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE Programadores SYSTEM "computers00ok.dtd">
+
+    <Programadores>
+    ...
+    </Programadores>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Programadores (Ordenador)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Ordenador (persona)*>
+<!ATTLIST Ordenador
+    id CDATA #IMPLIED
+    type CDATA #IMPLIED
+    serial CDATA #IMPLIED
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT persona (Nombre|Apellido|Cumple|Altura)*>
+<!ATTLIST persona
+    id CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Nombre (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Apellido (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Cumple (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Altura (#PCDATA)>
